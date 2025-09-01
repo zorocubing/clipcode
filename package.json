@@ -1,0 +1,51 @@
+{
+  "name": "clipcode",
+  "displayName": "clipcode",
+  "description": "Clip Code is a VS Code extension pulls your local Ollama models and use them to copilot your coding session without leaving the editor.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "clipcode.helloWorld",
+      "title": "Hello World"
+    }],
+    "viewsContainers": {
+        "activitybar": [
+      {
+        "id": "clipcode",
+        "title": "ClipCode",
+        "icon": "clipcode.svg"
+      }
+    ]
+    },
+    "views": {
+      "clipcode": [
+        {
+          "icon": "clipcode.svg",
+          "id": "clipcodeView",
+          "name": "Chat with Clip Code"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.103.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "eslint": "^9.32.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
