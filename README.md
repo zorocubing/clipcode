@@ -1,6 +1,6 @@
 # clipcode README
 
-This is the README for your extension "clipcode". After writing up a brief description, we recommend including the following sections.
+Clip Code is a VS Code extension pulls your local Ollama models and use them to copilot your coding session without leaving the editor.
 
 ## Features
 
