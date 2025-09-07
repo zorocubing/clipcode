@@ -12,18 +12,14 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "clipcode.helloWorld",
-      "title": "Hello World"
-    }],
     "viewsContainers": {
-        "activitybar": [
-      {
-        "id": "clipcode",
-        "title": "Clip Code",
-        "icon": "clipcode.svg"
-      }
-    ]
+      "activitybar": [
+        {
+          "id": "clipcode",
+          "title": "Clip Code",
+          "icon": "clipcode.svg"
+        }
+      ]
     },
     "views": {
       "clipcode": [
@@ -42,11 +38,14 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.103.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "eslint": "^9.32.0",
+    "@types/vscode": "^1.103.0",
     "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.32.0"
+  },
+  "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.4.0"
   }
 }
