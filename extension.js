@@ -16,18 +16,25 @@ class ClipCodeChatProvider {
         };
 
         // Set the HTML content
-        webviewView.webview.html = `
-            <!doctype html>
-            <html>
-            <body>
-                <h1>ClipCode Chat</h1>
-                <div id="content">Welcome to ClipCode!</div>
-            </body>
-            </html>
-        `;
+        webviewView.webview.html = this.getHtmlForWebview();
     }
 
-    
+    getHtmlForWebview() {
+      // Define your HTML content here
+      return `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>Chat with Clip Code!</title>
+          <style>
+          </style>
+        </head>
+        <body>
+          <h1>Clip Code</h1>
+          <p>Select model</p>
+        </body>
+        </html>`;
+    }
 }
 
 /**

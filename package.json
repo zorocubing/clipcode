@@ -31,7 +31,7 @@
           "type": "webview",
           "icon": "clipcode.svg",
           "id": "clipcodeView",
-          "name": "Chat with Clip Code"
+          "name": ""
         }
       ]
     }
