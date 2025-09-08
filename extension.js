@@ -26,12 +26,20 @@ class ClipCodeChatProvider {
         <head>
           <meta charset="UTF-8">
           <title>Chat with Clip Code!</title>
-          <style>
-          </style>
         </head>
         <body>
           <h1>Clip Code</h1>
-          <p>Select model</p>
+          <select id="LLM-selector" name="LLM" style="width: 300px; height: 30px; border-radius: 5px; border: 1px solid black;">
+            <option value="">Select model</option>
+            <option value="gpt-oss-20B">gpt-oss 20B</option>
+            <option value="gpt-oss-120B">gpt-oss 120B</option>
+          </select>
+
+          <br><br>
+
+          <div contenteditable="true" placeholder="Ask Clip Code..." style="border: 1px solid white; height: 30px; width: 300px; border-radius: 5px; padding: 5px; display: flex; align-items: center; justify-content: bottom;">
+            <p>Ask Clip Code...</p>
+          </div>
         </body>
         </html>`;
     }
