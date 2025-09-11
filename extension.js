@@ -31,7 +31,7 @@ class ClipCodeChatProvider {
                 try {
                     // Call Ollama API
                     const streamResponse = await ollama.chat({
-                        model: "gemma3n:e4b",
+                        model: "gpt-oss:20b",
                         messages: [{ role: 'user', content: userPrompt }],
                         stream: true
                     });
@@ -82,7 +82,7 @@ class ClipCodeChatProvider {
                     font-family: inherit;
                     font-size: 13px;
                     border-radius: 2px;
-                    resize: vertical;
+                    resize: none;
                 }
                 #prompt:focus {
                     outline: none;
@@ -125,7 +125,7 @@ class ClipCodeChatProvider {
         </head>
         <body>
             <h2>Clip Code</h2>
-            <div id="response">Ready to help! Ask me anything about your code...</div>
+            <div id="response">Clip Code is ready to help!</div>
             <textarea id="prompt" rows="3" placeholder="Ask Clip Code anything..."></textarea>
             <button id="sendBtn">Send</button>
 
