@@ -31,7 +31,7 @@ class ClipCodeChatProvider {
                 try {
                     // Call Ollama API
                     const streamResponse = await ollama.chat({
-                        model: "gpt-oss:20b",
+                        model: "gemma3n:e4b",
                         messages: [{ role: 'user', content: userPrompt }],
                         stream: true
                     });
