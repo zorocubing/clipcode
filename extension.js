@@ -31,7 +31,7 @@ class ClipCodeChatProvider {
                 try {
                     // Call Ollama API
                     const streamResponse = await ollama.chat({
-                        model: "gemma3n:e4b",
+                        model: "deepseek-coder:1.3b",
                         messages: [{ role: 'user', content: userPrompt }],
                         stream: true
                     });
