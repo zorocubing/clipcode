@@ -126,6 +126,7 @@ class ClipCodeChatProvider {
         <body>
             <h2>Clip Code</h2>
             <div id="response">Clip Code is ready to help!</div>
+            <br />
             <textarea id="prompt" rows="3" placeholder="Ask Clip Code anything..."></textarea>
             <button id="sendBtn">Send</button>
 
