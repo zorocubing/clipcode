@@ -72,6 +72,35 @@ class ClipCodeChatProvider {
                     margin-top: 0;
                     color: var(--vscode-foreground);
                 }
+                #model-selector {
+                    border: 1px solid var(--vscode-input-border);
+                    margin-top: 1rem;
+                    padding: 0.5rem;
+                    min-height: 15px;
+                    background: var(--vscode-input-background);
+                    color: var(--vscode-input-foreground)
+                    border-radius: 2px;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    font-size: 13px;
+                    line-height: 1.5;
+                }
+                #model-selector:focus {
+                    outline: none;
+                    border-color: var(--vscode-focusBorder)
+                }
+                #response { 
+                    border: 1px solid var(--vscode-panel-border);
+                    margin-top: 1rem; 
+                    padding: 0.75rem; 
+                    min-height: 50px;
+                    background: var(--vscode-editor-background);
+                    border-radius: 2px;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    font-size: 13px;
+                    line-height: 1.5;
+                }
                 #prompt { 
                     width: 100%; 
                     box-sizing: border-box;
@@ -87,18 +116,6 @@ class ClipCodeChatProvider {
                 #prompt:focus {
                     outline: none;
                     border-color: var(--vscode-focusBorder);
-                }
-                #response { 
-                    border: 1px solid var(--vscode-panel-border);
-                    margin-top: 1rem; 
-                    padding: 0.75rem; 
-                    min-height: 50px;
-                    background: var(--vscode-editor-background);
-                    border-radius: 2px;
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    font-size: 13px;
-                    line-height: 1.5;
                 }
                 #sendBtn {
                     margin-top: 0.5rem;
@@ -125,6 +142,12 @@ class ClipCodeChatProvider {
         </head>
         <body>
             <h2>Clip Code</h2>
+            <select name="model-selector" id="model-selector">
+                <option value="gpt-oss:20b">gpt-oss:20b</option>
+                <option value="gemma3n:e4b">gemma3n:e4b</option>
+                <option value="deepseek-coder:1.3b">deepseek-coder:1.3b</option>
+            </select>
+            <br />
             <div id="response">Clip Code is ready to help!</div>
             <br />
             <textarea id="prompt" rows="3" placeholder="Ask Clip Code anything..."></textarea>
