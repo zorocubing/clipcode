@@ -73,6 +73,7 @@ class ClipCodeChatProvider {
                     color: var(--vscode-foreground);
                 }
                 #model-selector {
+                    width: 100%;
                     border: 1px solid var(--vscode-input-border);
                     margin-top: 1rem;
                     padding: 0.5rem;
@@ -104,7 +105,7 @@ class ClipCodeChatProvider {
                 #prompt { 
                     width: 100%; 
                     box-sizing: border-box;
-                    padding: 0.5rem;
+                    padding: 0.75rem;
                     border: 1px solid var(--vscode-input-border);
                     background: var(--vscode-input-background);
                     color: var(--vscode-input-foreground);
@@ -118,6 +119,7 @@ class ClipCodeChatProvider {
                     border-color: var(--vscode-focusBorder);
                 }
                 #sendBtn {
+                    width: 100%;
                     margin-top: 0.5rem;
                     padding: 0.5rem 1rem;
                     background: var(--vscode-button-background);
@@ -148,9 +150,9 @@ class ClipCodeChatProvider {
                 <option value="deepseek-coder:1.3b">deepseek-coder:1.3b</option>
             </select>
             <br />
-            <div id="response">Clip Code is ready to help!</div>
+            <div id="response">What are we building today?</div>
             <br />
-            <textarea id="prompt" rows="3" placeholder="Ask Clip Code anything..."></textarea>
+            <textarea id="prompt" rows="3" placeholder="Ask anything"></textarea>
             <button id="sendBtn">Send</button>
 
             <script>
