@@ -1,3 +1,19 @@
+// async function listOllamaModels() {
+//       try {
+//         const models = await ollama.list();
+//         console.log(models);
+//         models.models.forEach(model => {
+//             const name = model.name;
+//             const id = model.model;
+//           console.log(`- ${name} and ${id}`);
+//         });
+//       } catch (error) {
+//         console.error('Error listing Ollama models:', error);
+//       }
+//     }
+
+//     listOllamaModels();
+
 const vscode = require('vscode');
 // Import Ollama at the top of your file
 const { default: ollama } = require('ollama'); // Common JS import method fix
