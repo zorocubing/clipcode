@@ -9,7 +9,7 @@ Clip Code is a VS Code extension pulls your local Ollama models and use them to 
 - No data being sent to data centers
 - Native VS Code UI
 
-<img width="1267" height="747" alt="clipcode_demo" src="https://github.com/user-attachments/assets/e037894e-e8dd-4ccb-8673-9ec532b3e2f8" />
+<img width="1267" height="747" alt="clipcode_demo" src="https://github.com/user-attachments/assets/ea47446b-5cdc-4452-b8ad-e62148b3d008" />
 
 ## Requirements
 
