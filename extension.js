@@ -44,8 +44,9 @@ class ClipCodeChatProvider {
 
                 try {
                     // Call Ollama API
+                    const { model } = message;
                     const streamResponse = await ollama.chat({
-                        model: "deepseek-coder:1.3b",
+                        model: model,
                         messages: [{ role: 'user', content: userPrompt }],
                         stream: true
                     });
@@ -173,7 +174,6 @@ class ClipCodeChatProvider {
                     const { command, models } = event.data;
                     if (command === 'modelsList') {
                         const dropdown = document.getElementById("model-selector");
-                        dropdown.innerHTML = '<option value="">Select a model</option>';
                         models.forEach(modelName => {
                             const option = document.createElement("option");
                             option.value = modelName;
@@ -183,12 +183,13 @@ class ClipCodeChatProvider {
                     }
                 });
 
-
                 // Send message to extension when button is clicked
                 document.getElementById('sendBtn').addEventListener('click', () => {
                     const text = document.getElementById('prompt').value;
+                    const dropdown = document.getElementById("model-selector");
+                    const selectedModel = dropdown.value;
                     if (text.trim()) {
-                        vscode.postMessage({ command: 'chat', text });
+                        vscode.postMessage({ command: 'chat', text, model: selectedModel });
                         // Clear the input and show loading
                         document.getElementById('prompt').value = '';
                         document.getElementById('response').innerHTML = '<span class="thinking">Thinking...</span>';

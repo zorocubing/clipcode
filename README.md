@@ -4,9 +4,10 @@ Clip Code is a VS Code extension pulls your local Ollama models and use them to 
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
+- Uses your local Ollama models
+- Unlimited usage
+- No data being sent to data centers
+- Native VS Code UI
 
 <img width="1267" height="747" alt="clipcode_demo" src="https://github.com/user-attachments/assets/e037894e-e8dd-4ccb-8673-9ec532b3e2f8" />
 
@@ -15,52 +16,28 @@ For example if there is an image subfolder under your extension project workspac
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- Have Ollama preinstalled with local models
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- One time context winodw, will be fixed in future versions
+- Not parsed raw tokens, will be fixed in future versions
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+v0.0.1
 
-### 1.0.0
+Clip Code is a VS Code extension that can...
+- Inference with your local Ollama models
+- Get coding assistance
+- Have unlimited usage
+- No data communication with the internet
 
-Initial release of ...
 
-### 1.0.1
+### 0.0.1
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Initial release of Clip Code
 
 ---
 
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Built with ❤️**
