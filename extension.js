@@ -1,21 +1,4 @@
-// async function listOllamaModels() {
-//       try {
-//         const models = await ollama.list();
-//         console.log(models);
-//         models.models.forEach(model => {
-//             const name = model.name;
-//             const id = model.model;
-//           console.log(`- ${name} and ${id}`);
-//         });
-//       } catch (error) {
-//         console.error('Error listing Ollama models:', error);
-//       }
-//     }
-
-//     listOllamaModels();
-
 const vscode = require('vscode');
-// Import Ollama at the top of your file
 const { default: ollama } = require('ollama'); // Common JS import method fix
 
 class ClipCodeChatProvider {
@@ -37,6 +20,21 @@ class ClipCodeChatProvider {
 
         // Set the HTML content
         webviewView.webview.html = this.getHtmlForWebview();
+
+        // Fetch local Ollama models because Node JS doesn't work on webviews
+        async function sendModelsToWebview() {
+            try {
+                const models = await ollama.list();
+                const modelNames = models.models.map(m => m.name);
+                webviewView.webview.postMessage({ 
+                    command: 'modelsList', 
+                    models: modelNames
+                });
+            } catch (error) {
+                console.error('Error fetching models:', error);
+            }
+        }
+        sendModelsToWebview();
 
         // Handle messages from the webview
         webviewView.webview.onDidReceiveMessage(async (message) => {
@@ -152,7 +150,7 @@ class ClipCodeChatProvider {
                 #sendBtn:active {
                     transform: translateY(1px);
                 }
-                .loading {
+                .thinking {
                     color: var(--vscode-descriptionForeground);
                     font-style: italic;
                 }
@@ -161,19 +159,31 @@ class ClipCodeChatProvider {
         <body>
             <h2>Clip Code</h2>
             <select name="model-selector" id="model-selector">
-                <option value="gpt-oss:20b">gpt-oss:20b</option>
-                <option value="gemma3n:e4b">gemma3n:e4b</option>
-                <option value="deepseek-coder:1.3b">deepseek-coder:1.3b</option>
             </select>
             <br />
-            <div id="response">What are we building today?</div>
+            <div id="response">What are we coding today?</div>
             <br />
             <textarea id="prompt" rows="3" placeholder="Ask anything"></textarea>
             <button id="sendBtn">Send</button>
 
             <script>
                 const vscode = acquireVsCodeApi();
-                
+                // Listen to the post message sent from the extension side
+                window.addEventListener('message', event => {
+                    const { command, models } = event.data;
+                    if (command === 'modelsList') {
+                        const dropdown = document.getElementById("model-selector");
+                        dropdown.innerHTML = '<option value="">Select a model</option>';
+                        models.forEach(modelName => {
+                            const option = document.createElement("option");
+                            option.value = modelName;
+                            option.textContent = modelName;
+                            dropdown.appendChild(option);
+                        });
+                    }
+                });
+
+
                 // Send message to extension when button is clicked
                 document.getElementById('sendBtn').addEventListener('click', () => {
                     const text = document.getElementById('prompt').value;
@@ -181,7 +191,7 @@ class ClipCodeChatProvider {
                         vscode.postMessage({ command: 'chat', text });
                         // Clear the input and show loading
                         document.getElementById('prompt').value = '';
-                        document.getElementById('response').innerHTML = '<span class="loading">Thinking...</span>';
+                        document.getElementById('response').innerHTML = '<span class="thinking">Thinking...</span>';
                     }
                 });
 
