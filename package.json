@@ -4,14 +4,14 @@
   "publisher": "zorocubing",
   "description": "Clip Code is a VS Code extension pulls your local Ollama models and use them to copilot your coding session without leaving the editor.",
   "icon": "clipcode_logo.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.103.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zorocubing/clipcode.git"
-},
+  },
   "categories": [
     "Other"
   ],
