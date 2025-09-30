@@ -1,5 +1,5 @@
-const vscode = require('vscode');
-const { default: ollama } = require('ollama'); // Common JS import method fix
+import * as vscode from 'vscode';
+import ollama from 'ollama';
 
 class ClipCodeChatProvider {
     /**
@@ -220,7 +220,7 @@ class ClipCodeChatProvider {
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
+export function activate(context) {
     console.log("Clip Code Extension activated!");
 
     // Check if Ollama is available
@@ -243,11 +243,6 @@ function activate(context) {
     context.subscriptions.push(disposable);
 }
 
-function deactivate() {
+export function deactivate() {
     console.log("Clip Code Extension deactivated");
-}
-
-module.exports = {
-    activate,
-    deactivate
 }

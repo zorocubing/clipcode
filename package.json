@@ -16,6 +16,7 @@
     "Other"
   ],
   "activationEvents": [],
+  "type": "module",
   "main": "./extension.js",
   "contributes": {
     "commands": [
