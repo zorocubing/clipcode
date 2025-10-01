@@ -11,7 +11,7 @@ class ClipCodeChatProvider {
 
     resolveWebviewView(webviewView) {
         this.webviewView = webviewView;
-        
+
         // Allow scripts in the webview
         webviewView.webview.options = {
             enableScripts: true,
@@ -26,8 +26,8 @@ class ClipCodeChatProvider {
             try {
                 const models = await ollama.list();
                 const modelNames = models.models.map(m => m.name);
-                webviewView.webview.postMessage({ 
-                    command: 'modelsList', 
+                webviewView.webview.postMessage({
+                    command: 'modelsList',
                     models: modelNames
                 });
             } catch (error) {
@@ -55,16 +55,16 @@ class ClipCodeChatProvider {
                     for await (const part of streamResponse) {
                         responseText += part.message.content;
                         // Send each chunk back to the webview as it arrives
-                        webviewView.webview.postMessage({ 
-                            command: 'chatResponse', 
-                            text: responseText 
+                        webviewView.webview.postMessage({
+                            command: 'chatResponse',
+                            text: responseText
                         });
                     }
                 } catch (err) {
                     // Send error message to webview
-                    webviewView.webview.postMessage({ 
-                        command: 'chatResponse', 
-                        text: `Error: ${String(err)}` 
+                    webviewView.webview.postMessage({
+                        command: 'chatResponse',
+                        text: `Error: ${String(err)}`
                     });
                 }
             }
@@ -165,7 +165,7 @@ class ClipCodeChatProvider {
             <div id="response">What are we coding today?</div>
             <br />
             <textarea id="prompt" rows="3" placeholder="Ask anything"></textarea>
-            <button id="sendBtn">Send</button>
+            <button id="sendBtn">➤</button>
 
             <script>
                 const vscode = acquireVsCodeApi();
