@@ -79,7 +79,7 @@ class ClipCodeChatProvider {
             <style>
                 body { 
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                    margin: 1rem; 
+                    margin: 0.75rem; 
                     color: var(--vscode-foreground);
                     background-color: var(--vscode-editor-background);
                 }
@@ -90,7 +90,7 @@ class ClipCodeChatProvider {
                 #model-selector {
                     width: 100%;
                     border: 1px solid var(--vscode-input-border);
-                    margin-top: 1rem;
+                    margin-top: 0rem;
                     padding: 0.5rem;
                     min-height: 15px;
                     background: var(--vscode-input-background);
@@ -118,9 +118,11 @@ class ClipCodeChatProvider {
                     line-height: 1.5;
                 }
                 #prompt { 
-                    width: 100%; 
+                    width: 80%;
+                    height: 2.75rem;
                     box-sizing: border-box;
                     padding: 0.75rem;
+                    margin-right: 0.25rem;
                     border: 1px solid var(--vscode-input-border);
                     background: var(--vscode-input-background);
                     color: var(--vscode-input-foreground);
@@ -134,8 +136,9 @@ class ClipCodeChatProvider {
                     border-color: var(--vscode-focusBorder);
                 }
                 #sendBtn {
-                    width: 100%;
-                    margin-top: 0.5rem;
+                    width: 20%;
+                    height: 2.75rem;
+                    margin-left: 0.25rem;
                     padding: 0.5rem 1rem;
                     background: var(--vscode-button-background);
                     color: var(--vscode-button-foreground);
@@ -143,7 +146,6 @@ class ClipCodeChatProvider {
                     border-radius: 2px;
                     cursor: pointer;
                     font-size: 13px;
-                    font-weight: 500;
                 }
                 #sendBtn:hover {
                     background: var(--vscode-button-hoverBackground);
@@ -155,6 +157,12 @@ class ClipCodeChatProvider {
                     color: var(--vscode-descriptionForeground);
                     font-style: italic;
                 }
+                .input-area {
+                    display: flex;
+                    flex-direction: row;
+                    position: absolute;
+                    bottom: 1rem;
+                }
             </style>
         </head>
         <body>
@@ -164,8 +172,10 @@ class ClipCodeChatProvider {
             <br />
             <div id="response">What are we coding today?</div>
             <br />
-            <textarea id="prompt" rows="3" placeholder="Ask anything"></textarea>
-            <button id="sendBtn">➤</button>
+            <footer class="input-area">
+                <textarea id="prompt" rows="3" placeholder="Ask anything"></textarea>
+                <button id="sendBtn">➤</button>
+            </div>
 
             <script>
                 const vscode = acquireVsCodeApi();
