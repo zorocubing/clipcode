@@ -161,7 +161,9 @@ class ClipCodeChatProvider {
                     display: flex;
                     flex-direction: row;
                     position: absolute;
-                    bottom: 1rem;
+                    bottom: 0.75rem;
+                    left: 0.75rem;
+                    right: 0.75rem;
                 }
             </style>
         </head>
