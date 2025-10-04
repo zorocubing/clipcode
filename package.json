@@ -23,6 +23,14 @@
       {
         "command": "clipcode.start",
         "title": "Chat with Clip Code"
+      },
+      {
+        "command": "clipcode.startNewChat",
+        "title": "Start New Chat",
+        "icon": {
+          "light": "add_light.svg",
+          "dark": "add_dark.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -41,6 +49,15 @@
           "icon": "clipcode.svg",
           "id": "clipcodeView",
           "name": ""
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "clipcode.startNewChat",
+          "when": "view == clipcodeView",
+          "group": "navigation"
         }
       ]
     }
