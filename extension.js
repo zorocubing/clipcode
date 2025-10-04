@@ -222,6 +222,13 @@ class ClipCodeChatProvider {
                     if (command === 'chatResponse') {
                         document.getElementById('response').innerText = text;
                     }
+                    // Handle reset command from the extension
+                    if (command === 'reset') {
+                        document.getElementById('response').innerText = 'What are we coding today?';
+                        document.getElementById('prompt').value = '';
+                        const dropdown = document.getElementById("model-selector");
+                        if (dropdown) dropdown.selectedIndex = 0;
+                    }
                 });
             </script>
         </body>
@@ -247,12 +254,21 @@ export function activate(context) {
         vscode.window.registerWebviewViewProvider('clipcodeView', provider)
     );
 
-    // Optional: Register a command to manually trigger the extension
+    // Register a command to manually trigger the extension
     let disposable = vscode.commands.registerCommand('clipcode.start', () => {
         vscode.window.showInformationMessage('Clip Code is ready in the sidebar!');
     });
 
-    context.subscriptions.push(disposable);
+    let startNewChat = vscode.commands.registerCommand('clipcode.startNewChat', () => {
+        // Post a 'reset' message to the webview so it can restore its initial state
+        if (provider && provider.webviewView && provider.webviewView.webview) {
+            provider.webviewView.webview.postMessage({ command: 'reset' });
+        } else {
+            vscode.window.showInformationMessage('Open the Clip Code view to reset the chat.');
+        }
+    });
+
+    context.subscriptions.push(disposable, startNewChat);
 }
 
 export function deactivate() {
