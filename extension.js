@@ -160,7 +160,7 @@ class ClipCodeChatProvider {
                 .input-area {
                     display: flex;
                     flex-direction: row;
-                    position: absolute;
+                    position: fixed;
                     bottom: 0.75rem;
                     left: 0.75rem;
                     right: 0.75rem;
