@@ -36,7 +36,7 @@ class ClipCodeChatProvider {
         }
         sendModelsToWebview();
 
-        // Handle messages from the webview
+        // Handle input from the webview
         webviewView.webview.onDidReceiveMessage(async (message) => {
             if (message.command === 'chat') {
                 const userPrompt = message.text;
@@ -94,7 +94,7 @@ class ClipCodeChatProvider {
                     padding: 0.5rem;
                     min-height: 15px;
                     background: var(--vscode-input-background);
-                    color: var(--vscode-input-foreground)
+                    color: var(--vscode-input-foreground);
                     border-radius: 2px;
                     white-space: pre-wrap;
                     word-wrap: break-word;
@@ -105,17 +105,24 @@ class ClipCodeChatProvider {
                     outline: none;
                     border-color: var(--vscode-focusBorder)
                 }
-                #response { 
-                    border: 1px solid var(--vscode-panel-border);
-                    margin-top: 1rem; 
-                    padding: 0.75rem; 
-                    min-height: 50px;
-                    background: var(--vscode-editor-background);
-                    border-radius: 2px;
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    font-size: 13px;
-                    line-height: 1.5;
+                .context-item {
+                    margin-bottom: 1rem; /* More breathing room between messages */
+                    padding: 0.75rem;
+                    border-radius: 6px;
+                    max-width: 80%; /* Prevents super wide messages */
+                }
+                .user {
+                    background: rgba(0,120,215,0.12); /* Slightly darker for contrast */
+                    align-self: flex-start; /* Left-align user messages */
+                }
+                .assistant {
+                    background: rgba(0,0,0,0.05); /* Subtle bg for assistant */
+                    align-self: flex-start; /* Left-align for now, or tweak to right if you want */
+                }
+                #context-window {
+                    display: flex;
+                    flex-direction: column; /* Stack messages vertically */
+                    gap: 0.5rem; /* Space between items */
                 }
                 #prompt { 
                     width: 80%;
@@ -160,10 +167,13 @@ class ClipCodeChatProvider {
                 .input-area {
                     display: flex;
                     flex-direction: row;
-                    position: fixed;
+                    position: sticky;
                     bottom: 0.75rem;
                     left: 0.75rem;
                     right: 0.75rem;
+                    background: transparent;
+                    margin-top: 50rem;
+                    padding: 0;
                 }
             </style>
         </head>
@@ -172,62 +182,93 @@ class ClipCodeChatProvider {
             <select name="model-selector" id="model-selector">
             </select>
             <br />
-            <div id="response">What are we coding today?</div>
+            <div id="context-window">
+                <br />
+            </div>
             <br />
             <footer class="input-area">
                 <textarea id="prompt" rows="3" placeholder="Ask anything"></textarea>
                 <button id="sendBtn">➤</button>
-            </div>
+            </footer>
 
             <script>
                 const vscode = acquireVsCodeApi();
-                // Listen to the post message sent from the extension side
+                const contextWindow = document.getElementById('context-window');
+                const promptInput = document.getElementById('prompt');
+                const sendBtn = document.getElementById('sendBtn');
+                const modelSelector = document.getElementById('model-selector');
+
+                // Function to scroll to bottom
+                function scrollToBottom() {
+                    if (contextWindow)
+                        contextWindow.scrollTop = contextWindow.scrollHeight;
+                }
+
+                // Message listener
                 window.addEventListener('message', event => {
-                    const { command, models } = event.data;
-                    if (command === 'modelsList') {
-                        const dropdown = document.getElementById("model-selector");
+                    const { command, models, text } = event.data;
+
+                    if (command === 'modelsList' && Array.isArray(models)) {
+                        modelSelector.innerHTML = '';
                         models.forEach(modelName => {
                             const option = document.createElement("option");
                             option.value = modelName;
                             option.textContent = modelName;
-                            dropdown.appendChild(option);
+                            modelSelector.appendChild(option);
                         });
                     }
-                });
 
-                // Send message to extension when button is clicked
-                document.getElementById('sendBtn').addEventListener('click', () => {
-                    const text = document.getElementById('prompt').value;
-                    const dropdown = document.getElementById("model-selector");
-                    const selectedModel = dropdown.value;
-                    if (text.trim()) {
-                        vscode.postMessage({ command: 'chat', text, model: selectedModel });
-                        // Clear the input and show loading
-                        document.getElementById('prompt').value = '';
-                        document.getElementById('response').innerHTML = '<span class="thinking">Thinking...</span>';
+                    if (command === 'chatResponse') {
+                        // Find the last assistant div and update it
+                        const assistantDivs = contextWindow.querySelectorAll('.assistant');
+                        const currentAssistant = assistantDivs[assistantDivs.length - 1];
+                        if (currentAssistant) {
+                            currentAssistant.innerText = text; // Overwrites 'Thinking...' with streaming text
+                            scrollToBottom();
+                        }
+                    }
+
+                    if (command === 'reset') {
+                        contextWindow.innerHTML = ''; // Clear all messages
+                        promptInput.value = '';
+                        modelSelector.selectedIndex = 0;
                     }
                 });
 
-                // Send on Enter key (Shift+Enter for new line)
-                document.getElementById('prompt').addEventListener('keydown', (e) => {
+                // Send button click
+                sendBtn.addEventListener('click', () => {
+                    const text = promptInput.value.trim();
+                    const selectedModel = modelSelector.value;
+
+                    if (text) {
+                        // Create and append user message div
+                        const userDiv = document.createElement('div');
+                        userDiv.classList.add('context-item', 'user');
+                        userDiv.innerText = text;
+                        contextWindow.appendChild(userDiv);
+
+                        // Create and append assistant placeholder div
+                        const assistantDiv = document.createElement('div');
+                        assistantDiv.classList.add('context-item', 'assistant');
+                        assistantDiv.innerHTML = '<span class="thinking">Thinking...</span>';
+                        contextWindow.appendChild(assistantDiv);
+
+                        // Scroll to bottom
+                        scrollToBottom();
+
+                        // Clear input
+                        promptInput.value = '';
+
+                        // Send to extension
+                        vscode.postMessage({ command: 'chat', text, model: selectedModel });
+                    }
+                });
+
+                // Enter key handling (unchanged)
+                promptInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        document.getElementById('sendBtn').click();
-                    }
-                });
-
-                // Listen for messages from the extension
-                window.addEventListener('message', event => {
-                    const { command, text } = event.data;
-                    if (command === 'chatResponse') {
-                        document.getElementById('response').innerText = text;
-                    }
-                    // Handle reset command from the extension
-                    if (command === 'reset') {
-                        document.getElementById('response').innerText = 'What are we coding today?';
-                        document.getElementById('prompt').value = '';
-                        const dropdown = document.getElementById("model-selector");
-                        if (dropdown) dropdown.selectedIndex = 0;
+                        sendBtn.click();
                     }
                 });
             </script>
