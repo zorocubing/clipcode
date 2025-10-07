@@ -7,6 +7,17 @@ class ClipCodeChatProvider {
      */
     constructor(context) {
         this.context = context;
+
+        // Define system prompt here so it's reused and can be reset
+        this.systemPrompt = "Your name is Clip Code, an AI coding assistant integrated into VS Code. Provide concise, relevant answers to coding questions. If you don't know the answer, say 'I don't know'.";
+
+        // Persist conversation history on the provider instance so the model remembers context
+        this.messages = [{ role: 'system', content: this.systemPrompt }];
+    }
+
+    // Add reset helper
+    resetHistory() {
+        this.messages = [{ role: 'system', content: this.systemPrompt }];
     }
 
     resolveWebviewView(webviewView) {
@@ -43,36 +54,51 @@ class ClipCodeChatProvider {
                 let responseText = '';
 
                 try {
-                    // Call Ollama API
+                    // Ensure model is provided or fallback later
                     const { model } = message;
+
+                    // Push user message into persistent history
+                    this.messages.push({ role: 'user', content: userPrompt });
+
+                    // Start the streaming chat. Do NOT pre-push an empty assistant message here;
                     const streamResponse = await ollama.chat({
                         model: model,
-                        messages: [{
-                            role: 'system', 
-                            content: "Your name is Clip Code, an AI coding assistant integrated into VS Code. Provide concise, relevant answers to coding questions. If you don't know the answer, say 'I don't know'."
-                        },
-                            { role: 'user', 
-                            content: userPrompt }
-                        ],
+                        messages: this.messages,
                         stream: true
                     });
 
+                    // Before streaming chunks arrive, add an assistant placeholder in history
+                    this.messages.push({ role: 'assistant', content: '' });
+
                     // Process the streaming response
                     for await (const part of streamResponse) {
-                        responseText += part.message.content;
+                        const chunk = part?.message?.content ?? '';
+                        responseText += chunk;
+
+                        // Update last assistant message in history with the current partial text
+                        const lastIdx = this.messages.length - 1;
+                        if (lastIdx >= 0 && this.messages[lastIdx].role === 'assistant') {
+                            this.messages[lastIdx].content = responseText;
+                        }
+
                         // Send each chunk back to the webview as it arrives
                         webviewView.webview.postMessage({
                             command: 'chatResponse',
                             text: responseText
                         });
                     }
+
                 } catch (err) {
-                    // Send error message to webview
                     webviewView.webview.postMessage({
                         command: 'chatResponse',
                         text: `Error: ${String(err)}`
                     });
                 }
+            }
+
+            // Optional: allow webview to tell extension to reset conversation
+            if (message.command === 'resetHistory') {
+                this.resetHistory();
             }
         });
     }
@@ -129,6 +155,7 @@ class ClipCodeChatProvider {
                     display: flex;
                     flex-direction: column; /* Stack messages vertically */
                     gap: 0.5rem; /* Space between items */
+                    max-height: calc(100vh - 220px); /* adjust to leave space for header + selector + input */
                 }
                 #prompt { 
                     width: 80%;
@@ -310,6 +337,10 @@ export function activate(context) {
         // Post a 'reset' message to the webview so it can restore its initial state
         if (provider && provider.webviewView && provider.webviewView.webview) {
             provider.webviewView.webview.postMessage({ command: 'reset' });
+            // Also reset backend message history so the model forgets previous context
+            if (typeof provider.resetHistory === 'function') {
+                provider.resetHistory();
+            }
         } else {
             vscode.window.showInformationMessage('Open the Clip Code view to reset the chat.');
         }
