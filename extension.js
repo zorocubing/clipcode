@@ -47,7 +47,13 @@ class ClipCodeChatProvider {
                     const { model } = message;
                     const streamResponse = await ollama.chat({
                         model: model,
-                        messages: [{ role: 'user', content: userPrompt }],
+                        messages: [{
+                            role: 'system', 
+                            content: "Your name is Clip Code, an AI coding assistant integrated into VS Code. Provide concise, relevant answers to coding questions. If you don't know the answer, say 'I don't know'."
+                        },
+                            { role: 'user', 
+                            content: userPrompt }
+                        ],
                         stream: true
                     });
 
